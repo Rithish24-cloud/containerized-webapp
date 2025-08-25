@@ -7,6 +7,8 @@ pipeline {
     TAG = "${BUILD_NUMBER}"
     DOCKERHUB = credentials('dockerhub-pass') // set this ID in Jenkins
   }
+  
+  
 
   stages {
     stage('Checkout') {
