@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    REGISTRY = "your-dockerhub-username"
+    REGISTRY = "rithishkumar2405"
     IMAGE = "flask-app"
     TAG = "${BUILD_NUMBER}"
     DOCKERHUB = credentials('dockerhub-pass') // set this ID in Jenkins
@@ -36,9 +36,9 @@ pipeline {
       when { expression { return params.APPLY_MANIFESTS == true } }
       steps {
         sh '''
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
-          kubectl apply -f k8s/hpa.yaml
+         sudo k3s kubectl apply -f k8s/deployment.yaml
+         sudo k3s kubectl apply -f k8s/service.yaml
+         sudo k3s kubectl apply -f k8s/hpa.yaml
         '''
       }
     }
@@ -46,8 +46,8 @@ pipeline {
     stage('Rolling Update') {
       steps {
         sh '''
-          kubectl set image deployment/flask-app flask-container=$REGISTRY/$IMAGE:$TAG --record
-          kubectl rollout status deployment/flask-app
+         sudo k3s kubectl set image deployment/flask-app flask-container=$REGISTRY/$IMAGE:$TAG --record
+         sudo k3s kubectl rollout status deployment/flask-app
         '''
       }
     }
